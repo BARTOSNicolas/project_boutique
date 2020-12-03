@@ -1,12 +1,11 @@
 <?php
 include "functions.php";
-global $item_1;
 
 //Variables
-$item_name = $item_1["name"];
-$item_price = $item_1["price"];
-$item_picture = $item_1["picture"];
-$item_desc = $item_1["desc"];
+$item_name = $_GET['itemName'];
+$item_price = $_GET['itemPrice'];
+$item_picture = $_GET['itemPicture'];
+$item_desc = $_GET['itemDesc'];
 
 ?>
 <!doctype html>
@@ -22,20 +21,8 @@ $item_desc = $item_1["desc"];
 <body>
 <? include "header.php" ?>
 <div class="container">
-    <div class="card mb-3 d-flex .flex-column align-content-center">
-        <div class="row no-gutters">
-            <div class="col-2">
-                <img src="img/<? echo $item_picture ?>" class="card-img-top" alt="Photo">
-            </div>
-            <div class="card-body col-8 p-2">
-                <h5 class="card-title"><? echo $item_name ?></h5>
-                <p class="card-text"><? echo $item_desc ?></p>
-            </div>
-            <div class="col-2 w-50 d-flex align-items-center">
-                <a href="#" class="btn btn-primary w-100"><? echo $item_price ?> €</a>
-            </div>
-        </div>
-    </div>
+    <? displayItem($item_name, $item_price, $item_picture, $item_desc)?>
+    <a type="button" href="catalogue.php" class="btn btn-primary mt-5">Retour</a>
 </div>
 
 <script src="js/jquery-3.5.1.slim.min.js"></script>

@@ -1,12 +1,10 @@
 <?php
-//Inclusion du fichier article PHP
 include "functions.php";
-global $item_1;
-global $item_2;
-global $item_3;
 
-//Array commune pour les 3 articles
-global $list_articles;
+$new_name = htmlspecialchars($_GET['itemName']);
+$new_desc = htmlspecialchars($_GET['itemDesc']);
+$new_price = htmlspecialchars($_GET['itemPrice']);
+$new_picture = htmlspecialchars($_GET['itemPicture']);
 
 ?>
 <!doctype html>
@@ -17,20 +15,15 @@ global $list_articles;
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <title>Page Catalogue</title>
+    <title>Nouvelle Article</title>
 </head>
 <body>
 <? include "header.php" ?>
 <div class="container">
-<?
-foreach ($list_articles as $article){
-    displayItem($article["name"], $article["price"], $article["picture"], $article["desc"]);
-}
-?>
-    <a type="button" href="addItem.php" class="btn btn-primary float-right mt-5">Add New Item</a>
+    <? displayItem($new_name, $new_price, $new_picture, $new_desc) ?>
+    <a type="button" href="addItem.php" class="btn btn-primary mt-5">Annuler le produit</a>
+    <a type="button" href="catalogue.php" class="btn btn-primary mt-5 float-right">Valider le produit</a>
 </div>
-
-
 
 <script src="js/jquery-3.5.1.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>

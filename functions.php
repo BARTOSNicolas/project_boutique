@@ -34,7 +34,7 @@ function displayItem($name, $price, $picture, $desc){
                     <p class="card-text">'.$desc.'</p>
                 </div>
                 <div class="col-2 w-50 d-flex align-items-center">
-                    <a href="item.php" class="btn btn-primary w-100">'.$price.' €</a>
+                    <a href="item.php?itemName='.$name.'&amp;itemPrice='.$price.'&amp;itemPicture='.$picture.'&amp;itemDesc='.$desc.'" class="btn btn-primary w-100">'.$price.' €</a>
                 </div>              
             </div>
         </div>

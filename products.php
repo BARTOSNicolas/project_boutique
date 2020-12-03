@@ -9,15 +9,16 @@ $item_1 = [
 // Array pour article  2
 $item_2 = [
     "name" => "Les tasses connectées",
-    "price" => 999,
+    "price" => 29,
     "picture" => "tasses.jpg",
     "desc" => "Grâce à nos tasses connectées, vous ne pourrez plus boire votre café."
 ];
 // Array pour article  3
 $item_3 = [
     "name" => "l'arrosoir arrosé",
-    "price" => 89,
+    "price" => 59,
     "picture" => "arrosoir.jpg",
     "desc" => "Notre arrosoir design est totalement inutile pour arroser vos plantes."
 
 ];
+$list_articles = array($item_1, $item_2, $item_3);
