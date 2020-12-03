@@ -1,9 +1,6 @@
 <?php
 //Inclusion du fichier article PHP
 include "functions.php";
-global $item_1;
-global $item_2;
-global $item_3;
 
 //Array commune pour les 3 articles
 global $list_articles;
@@ -22,16 +19,21 @@ global $list_articles;
 <body>
 <? include "header.php" ?>
 <div class="container">
+    <div class="d-flex justify-content-end">
+        <a type="button" href="addItem.php" class="btn btn-primary mb-5">Add New Item</a>
+    </div>
 <?
-foreach ($list_articles as $article){
-    displayItem($article["name"], $article["price"], $article["picture"], $article["desc"]);
+foreach ($list_articles as $index => $article){
+    displayItem($article["name"], $article["price"], $article["picture"], $article["desc"], $index);
 }
 ?>
-    <a type="button" href="addItem.php" class="btn btn-primary float-right mt-5">Add New Item</a>
+    <div class="d-flex justify-content-end">
+        <input type="submit" href="backet.php" class="btn btn-primary mb-5" value="Ajouter au panier">
+    </div>
 </div>
 
 
-
+<? include "footer.php" ?>
 <script src="js/jquery-3.5.1.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 </body>

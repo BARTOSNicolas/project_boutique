@@ -112,10 +112,11 @@ if (empty($_POST)){
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-5">Créer le produit</button>
+        <button type="submit" class="btn btn-primary mt-5 float-right">Créer le produit</button>
+        <button type="reset" class="btn btn-primary mt-5 float-right mr-3">Reset</button>
     </form>
 </div>
-
+<? include "footer.php" ?>
 <script src="js/jquery-3.5.1.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/bs-custom-file-input.min.js"></script>

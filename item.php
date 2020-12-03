@@ -7,6 +7,7 @@ $item_price = htmlspecialchars($_GET['itemPrice']);
 $item_picture = htmlspecialchars($_GET['itemPicture']);
 $item_desc = htmlspecialchars($_GET['itemDesc']);
 
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -21,10 +22,10 @@ $item_desc = htmlspecialchars($_GET['itemDesc']);
 <body>
 <? include "header.php" ?>
 <div class="container">
-    <? displayItem($item_name, $item_price, $item_picture, $item_desc)?>
-    <a type="button" href="catalogue.php" class="btn btn-primary mt-5">Retour</a>
+    <? displayItemSelf($item_name, $item_price, $item_picture, $item_desc)?>
+    <a type="button" href="catalogue.php" class="btn btn-primary mt-5 float-right">Retour</a>
 </div>
-
+<? include "footer.php" ?>
 <script src="js/jquery-3.5.1.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 </body>
