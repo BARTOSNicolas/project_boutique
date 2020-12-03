@@ -2,10 +2,10 @@
 include "functions.php";
 
 //Variables
-$item_name = $_GET['itemName'];
-$item_price = $_GET['itemPrice'];
-$item_picture = $_GET['itemPicture'];
-$item_desc = $_GET['itemDesc'];
+$item_name = htmlspecialchars($_GET['itemName']);
+$item_price = htmlspecialchars($_GET['itemPrice']);
+$item_picture = htmlspecialchars($_GET['itemPicture']);
+$item_desc = htmlspecialchars($_GET['itemDesc']);
 
 ?>
 <!doctype html>

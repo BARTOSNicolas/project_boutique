@@ -5,32 +5,34 @@ $error_message_desc = "";
 $error_message_picture = "";
 $error_message_price = "";
 
+//Verifie SI le $_POST est vide
 if (empty($_POST)){
     $_POST['itemName'] ='';
     $_POST['itemDesc'] = '';
     $_POST['itemPrice'] = '';
     $_FILES['itemFile']= '';
+//SINON
 }else{
     // Verifie et Implante le $_POST name
     if (empty($_POST['itemName'])){
         $form_error = true;
         $error_message_name = "Il faut obligatoirement entrer un nom.";
     }else{
-        $get_name = $_POST['itemName'];
+        $get_name = htmlspecialchars($_POST['itemName']);
     }
     // Verifie et Implante le $_POST description
     if (empty($_POST['itemDesc'])){
         $form_error = true;
         $error_message_desc = "Il faut obligatoirement entrer une description.";
     }else{
-        $get_desc = $_POST['itemDesc'];
+        $get_desc = htmlspecialchars($_POST['itemDesc']);
     }
     // Verifie et Implante le $_POST price
-    if (empty($_POST['itemPrice']) || $_POST['itemPrice'] <= 1){
+    if (empty($_POST['itemPrice']) || $_POST['itemPrice'] <= 0){
         $form_error = true;
         $error_message_price = "Il faut obligatoirement entrer une valeur positive.";
     }else{
-        $get_price = $_POST['itemPrice'];
+        $get_price = htmlspecialchars($_POST['itemPrice']);
     }
     // Test si le fichier IMAGE à bien été envoyer et si il n'y a pas d'erreur
     if(!empty($_FILES['itemFile']) AND $_FILES['itemFile']['error'] == 0){
@@ -42,7 +44,7 @@ if (empty($_POST)){
             //Verifie le format du fichier
             if (in_array($extension_upload, $extension_autorisees)){
                 move_uploaded_file($_FILES['itemFile']['tmp_name'], "img/".basename($_FILES['itemFile']['name']));
-                $get_picture = $_FILES['itemFile']['name'];
+                $get_picture = htmlspecialchars($_FILES['itemFile']['name']);
             }else{
                 $form_error = true;
                 $error_message_picture = "Cette extension n'est pas autorisée.";
@@ -55,13 +57,11 @@ if (empty($_POST)){
         $form_error = true;
         $error_message_picture = "L'image est obligatoire pour valider le formulaire.";
     }
+    // Si tout est OK Envoi en GET les info à displayItem
     if(!$form_error){
        header("Location: displayItem.php?itemName=".$get_name."&itemPrice=".$get_price."&itemPicture=".$get_picture."&itemDesc=".$get_desc."");
    }
 }
-
-
-
 
 ?>
 
@@ -93,7 +93,7 @@ if (empty($_POST)){
             <div class="form-group col-5">
                 <label for="itemPrice">Prix du produit</label>
                 <div class="input-group">
-                    <input type="number"  class="form-control" id="itemPrice" name="itemPrice" value="<? echo $_POST['itemPrice'] ?>">
+                    <input type="number" step="1" class="form-control" id="itemPrice" name="itemPrice" value="<? echo $_POST['itemPrice'] ?>">
                     <div class="input-group-append">
                         <span class="input-group-text">€</span>
                     </div>
