@@ -3,7 +3,11 @@
 include "functions.php";
 
 //Array commune pour les 3 articles
+$error_basket_empty = "";
 global $list_articles;
+if (isset($_GET['error']) && $_GET['error']){
+    $error_basket_empty = "Vous n'avez pas sélectionner de produits";
+}
 
 ?>
 <!doctype html>
@@ -22,14 +26,17 @@ global $list_articles;
     <div class="d-flex justify-content-end">
         <a type="button" href="addItem.php" class="btn btn-primary mb-5">Add New Item</a>
     </div>
+    <form action="basket.php" method="post">
 <?
-foreach ($list_articles as $index => $article){
-    displayItem($article["name"], $article["price"], $article["picture"], $article["desc"], $index);
+    foreach ($list_articles as $index => $article){
+        displayItem($article["name"], $article["price"], $article["picture"], $article["desc"], $index);
 }
 ?>
-    <div class="d-flex justify-content-end">
-        <input type="submit" href="backet.php" class="btn btn-primary mb-5" value="Ajouter au panier">
-    </div>
+        <div class="d-flex justify-content-end align-items-start">
+            <p class="text-danger mr-4 pt-1"><? echo $error_basket_empty ?></p>
+            <input type="submit" class="btn btn-primary mb-5" value="Ajouter au panier">
+        </div>
+    </form>
 </div>
 
 
