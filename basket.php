@@ -1,13 +1,23 @@
 <?php
+//Démarrer le system de SESSION
+session_start();
+
 include "functions.php";
 global $list_articles;
 $basket_list = array();
+$quantity_list = array();
 $message_error_price = "";
+$empty = false;
 // Si le POST est vide message erreur
 if (isset($_POST['basket'])){
-    $basket_list =$_POST['basket'];
+    $basket_list = $_POST['basket'];
 }else if(isset($_POST['basket_list'])){
-    $basket_list =$_POST['basket_list'];
+    $basket_list = $_POST['basket_list'];
+}else if(isset($_SESSION['basket'])){
+    $basket_list = $_SESSION['basket'];
+    if(empty($basket_list)){
+        $message_error_price = "le panier est vide";
+    }
 }else{
     $message_error_price = "le panier est vide";
 }
@@ -16,6 +26,7 @@ if (isset($_POST['basket'])){
 foreach ($basket_list as $index => $item){
     if (isset($_POST['delete'.$index])){
         unset($basket_list[$index]);
+        unset($quantity_list[$index]);
         if (!$basket_list){
             $message_error_price = "le panier est vide";
         }
@@ -23,11 +34,24 @@ foreach ($basket_list as $index => $item){
 }
 
 // Garde les quantités en mémoire
-foreach ($basket_list as $index => $item){
-    if (!isset($_POST["quantity"])){
-        $quantity[$index] = 1;
-    }else{
-        $quantity[$index] = $_POST["quantity"][$index];
+if (isset($_POST['basket'])){
+    foreach ($basket_list as $index => $item){
+        $quantity_list[$index] = 1;
+    }
+}else {
+    foreach ($basket_list as $index => $item) {
+        if (isset($_POST["quantity"])) {
+            $quantity_list[$index] = $_POST["quantity"][$index];
+        } else if (isset($_SESSION['quantity'])) {
+            if (isset($_SESSION["quantity"][$index])) {
+                $quantity_list[$index] = $_SESSION["quantity"][$index];
+            } else if (empty($quantity_list[$index])) {
+                $quantity_list[$index] = 1;
+            }
+        } else {
+            $quantity_list[$index] = 1;
+
+        }
     }
 }
 
@@ -36,7 +60,18 @@ $total_price = 0;
 function calculBasket($nbr, $price){
     return $nbr * $price;
 }
-
+function emptyBasket(){
+    global $basket_list;
+    global $quantity_list;
+    $basket_list = array();
+    $quantity_list = array();
+}
+if(isset($_GET["empty"]) && $_GET["empty"]){
+    emptyBasket();
+    $message_error_price = "le panier est vide";
+}
+$_SESSION['basket'] = $basket_list;
+$_SESSION['quantity'] = $quantity_list;
 ?>
 <!doctype html>
 <html lang="en">
@@ -53,11 +88,11 @@ function calculBasket($nbr, $price){
 <div class="container">
     <form action="basket.php" method="post">
         <? foreach ($basket_list as $index => $item){
-            if ($quantity[$index] <= 0){
+            if ($quantity_list[$index] <= 0){
                 $message_error_price = "Quantité inextact";
             }
-            displayItemBasket($list_articles[$item]['name'], $list_articles[$item]['price'], $list_articles[$item]['picture'], $list_articles[$item]['desc'], $index, $quantity[$index], $message_error_price);
-            $total_price = $total_price + calculBasket($quantity[$index], $list_articles[$item]['price']);
+            displayItemBasket($list_articles[$item]['name'], $list_articles[$item]['price'], $list_articles[$item]['picture'], $list_articles[$item]['desc'], $index, $quantity_list[$index], $message_error_price);
+            $total_price = $total_price + calculBasket($quantity_list[$index], $list_articles[$item]['price']);
             echo '<input type="hidden" value="'.$item.'" name="basket_list[]">';
         }?>
         <div class="d-flex justify-content-end mt-5">

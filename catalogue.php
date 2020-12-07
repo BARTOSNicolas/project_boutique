@@ -1,4 +1,5 @@
 <?php
+session_start();
 //Inclusion du fichier article PHP
 include "functions.php";
 

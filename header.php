@@ -12,9 +12,9 @@ echo '
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-link active" href="catalogue.php">Catalogue <span class="sr-only">(current)</span></a>
-          <a class="nav-link" href="addItem.php">Ajouter un produit</a>
+          <!--<a class="nav-link" href="addItem.php">Ajouter un produit</a>-->
           <a class="nav-link" href="basket.php">Panier</a>
-          <a class="nav-link" href="basket.php">Vider le panier</a>
+          <a class="nav-link" href="basket.php?empty=true">Vider le panier</a>
         </div>
       </div>
   </div>
