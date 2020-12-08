@@ -1,6 +1,6 @@
 <?php
 //Message en random
-$message = array("Ca sert à rien, alors on en a besoin !!", "Les objets du quotidien qui ne servent à rien !!", "Vous êtes riche, alors acheter les quand même !!");
+$message = array("Ca sert à rien, alors vous en avez besoin !!", "Les objets du quotidien qui ne vous serviront à rien !!", "Vous êtes riche, alors acheter les quand même !!");
 $rand = rand( 0, 2 );
 echo '
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -19,10 +19,10 @@ echo '
       </div>
   </div>
 </nav>
-<div class="jumbotron jumbotron-fluid text-center" style="background-color: #e3f2fd;">
+<div class="jumbotron jumbotron-fluid text-center" style="background-color: #4DA3FF;">
   <div class="container">
-    <a href="catalogue.php" class="display-4 text-primary text-decoration-none">Useless Shop</a>
-    <p class="lead text-primary">'.$message[$rand].'</p>
+    <a href="catalogue.php" class="display-4 text-white text-decoration-none">Useless Shop</a>
+    <p class="lead text-white">'.$message[$rand].'</p>
   </div>
 </div>
 ';

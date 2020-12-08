@@ -1,4 +1,5 @@
 <?php
+//Variables d'erreur
 $form_error = false;
 $error_message_name = "";
 $error_message_desc = "";
@@ -121,6 +122,7 @@ if (empty($_POST)){
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/bs-custom-file-input.min.js"></script>
 <script>
+    // Du JS pour afficher le nom du fichier dans la zone de chargement
     $(document).ready(function () {
         bsCustomFileInput.init()
     })

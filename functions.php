@@ -1,7 +1,7 @@
 <?php
 include "products.php";
 
-//Fonction pour afficher item
+//Fonction pour afficher les articles du catalogue
 function displayItem($name, $price, $picture, $desc, $index){
     echo'<div class="card mb-3 d-flex .flex-column align-content-center">
             <div class="row no-gutters">
@@ -27,6 +27,7 @@ function displayItem($name, $price, $picture, $desc, $index){
         </div>
     ';
 }
+//Fonction pôur afficher 1 article
 function displayItemSelf($name, $price, $picture, $desc){
     echo'<div class="card mb-3 d-flex .flex-column align-content-center">
             <div class="row no-gutters">
@@ -44,7 +45,8 @@ function displayItemSelf($name, $price, $picture, $desc){
         </div>
     ';
 }
-function displayItemBasket($name, $price, $picture, $desc, $index, $quantity, $error){
+//Fonction pour afficher les articles du panier
+function displayItemBasket($name, $price, $picture, $desc, $index, $quantity, $error, $weight){
     echo '<div class="card mb-3 d-flex .flex-column align-content-center">
             <div class="row no-gutters">
                 <div class="col-2">

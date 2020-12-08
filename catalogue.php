@@ -4,8 +4,9 @@ session_start();
 include "functions.php";
 
 //Array commune pour les 3 articles
-$error_basket_empty = "";
 global $list_articles;
+
+$error_basket_empty = "";
 if (isset($_GET['error']) && $_GET['error']){
     $error_basket_empty = "Vous n'avez pas sélectionner de produits";
 }
@@ -35,7 +36,7 @@ if (isset($_GET['error']) && $_GET['error']){
 ?>
         <div class="d-flex justify-content-end align-items-start">
             <p class="text-danger mr-4 pt-1"><? echo $error_basket_empty ?></p>
-            <input type="submit" class="btn btn-primary mb-5" value="Ajouter au panier">
+            <input type="submit" class="btn btn-primary" style="margin-bottom: 150px" value="Ajouter au panier">
         </div>
     </form>
 </div>
