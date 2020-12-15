@@ -126,12 +126,12 @@ $_SESSION['quantity'] = $quantity_list;
         }
         ?>
         <div class="d-flex justify-content-end mt-5">
-            <label for="calcul" class="mr-5">Poid total : <? echo ($message_error_price ? "0" : $shipping_weight) ?> gr</label>
-            <input type="text" class="text-primary" id="calcul" disabled value="<? echo ($message_error_price ? "Envoi impossible" : $shipping_price."€") ?>">
+            <label for="calcul" class="mr-5">Poid total : <?php echo ($message_error_price ? "0" : $shipping_weight) ?> gr</label>
+            <input type="text" class="text-primary" id="calcul" disabled value="<?php echo ($message_error_price ? "Envoi impossible" : $shipping_price."€") ?>">
         </div>
         <div class="d-flex justify-content-end mt-1">
             <input type="submit" name="calcul" class="btn btn-success mr-5" value="Calculer le panier">
-            <input type="text" class="<? echo ($message_error_price ? "text-danger" : "text-success")?>" id="calcul" disabled value="<? echo ($message_error_price ? $message_error_price : ($total_price + $shipping_price)."€") ?>">
+            <input type="text" class="<?php echo ($message_error_price ? "text-danger" : "text-success")?>" id="calcul" disabled value="<?php echo ($message_error_price ? $message_error_price : ($total_price + $shipping_price)."€") ?>">
 
         </div>
         <a type="button" href="catalogue.php" class="btn btn-primary float-right mt-5">Retour</a>

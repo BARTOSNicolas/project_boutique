@@ -22,7 +22,7 @@ $item_desc = htmlspecialchars($_GET['itemDesc']);
 <body>
 <?php include "header.php" ?>
 <div class="container">
-    <? displayItemSelf($item_name, $item_price, $item_picture, $item_desc)?>
+    <?php displayItemSelf($item_name, $item_price, $item_picture, $item_desc)?>
     <a type="button" href="catalogue.php" class="btn btn-primary mt-5 float-right">Retour</a>
 </div>
 <?php include "footer.php" ?>
