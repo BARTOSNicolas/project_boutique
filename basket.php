@@ -104,10 +104,10 @@ $_SESSION['quantity'] = $quantity_list;
     <title>Votre commande</title>
 </head>
 <body>
-<? include "header.php" ?>
+<?php include "header.php" ?>
 <div class="container">
     <form action="basket.php" method="post">
-        <? foreach ($basket_list as $index => $item){
+        <?php foreach ($basket_list as $index => $item){
             if ($quantity_list[$index] <= 0){
                 $message_error_price = "Quantité inextact";
             }
@@ -138,7 +138,7 @@ $_SESSION['quantity'] = $quantity_list;
 
     </form>
 </div>
-<? include "footer.php" ?>
+<?php include "footer.php" ?>
 <script src="js/jquery-3.5.1.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 </body>

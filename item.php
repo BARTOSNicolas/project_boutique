@@ -20,12 +20,12 @@ $item_desc = htmlspecialchars($_GET['itemDesc']);
     <title>Article </title>
 </head>
 <body>
-<? include "header.php" ?>
+<?php include "header.php" ?>
 <div class="container">
     <? displayItemSelf($item_name, $item_price, $item_picture, $item_desc)?>
     <a type="button" href="catalogue.php" class="btn btn-primary mt-5 float-right">Retour</a>
 </div>
-<? include "footer.php" ?>
+<?php include "footer.php" ?>
 <script src="js/jquery-3.5.1.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 </body>

@@ -18,15 +18,15 @@ $new_picture = htmlspecialchars($_GET['itemPicture']);
     <title>Nouvelle Article</title>
 </head>
 <body>
-<? include "header.php" ?>
+<?php include "header.php" ?>
 <div class="container">
-    <? displayItemSelf($new_name, $new_price, $new_picture, $new_desc) ?>
+    <?php displayItemSelf($new_name, $new_price, $new_picture, $new_desc) ?>
     <div class="d-flex justify-content-center">
         <a type="button" href="addItem.php" class="btn btn-danger mt-5 mr-3 ">Annuler le produit</a>
         <a type="button" href="catalogue.php" class="btn btn-success mt-5">Valider le produit</a>
     </div>
 </div>
-<? include "footer.php" ?>
+<?php include "footer.php" ?>
 <script src="js/jquery-3.5.1.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 </body>

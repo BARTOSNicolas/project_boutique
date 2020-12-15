@@ -23,13 +23,13 @@ if (isset($_GET['error']) && $_GET['error']){
     <title>Page Catalogue</title>
 </head>
 <body>
-<? include "header.php" ?>
+<?php include "header.php" ?>
 <div class="container">
     <div class="d-flex justify-content-end">
         <a type="button" href="addItem.php" class="btn btn-primary mb-5">Add New Item</a>
     </div>
     <form action="basket.php" method="post">
-<?
+<?php
     foreach ($list_articles as $index => $article){
         displayItem($article["name"], $article["price"], $article["picture"], $article["desc"], $index);
 }
@@ -42,7 +42,7 @@ if (isset($_GET['error']) && $_GET['error']){
 </div>
 
 
-<? include "footer.php" ?>
+<?php include "footer.php" ?>
 <script src="js/jquery-3.5.1.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 </body>

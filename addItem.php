@@ -77,29 +77,29 @@ if (empty($_POST)){
     <title>Ajouter un objet</title>
 </head>
 <body>
-<? include "header.php"; ?>
+<?php include "header.php"; ?>
 <div class="container">
     <form method="post" action="addItem.php" enctype="multipart/form-data">
         <div class="form-group">
             <label for="itemName">Nom du produit</label>
-            <input type="text" class="form-control" id="itemName" name="itemName" value="<? echo $_POST['itemName'] ?>">
-            <? echo '<p class="text-danger">'.$error_message_name.'</p>'?>
+            <input type="text" class="form-control" id="itemName" name="itemName" value="<?php echo $_POST['itemName'] ?>">
+            <?php echo '<p class="text-danger">'.$error_message_name.'</p>'?>
         </div>
         <div class="form-group">
             <label for="itemDesc">Description du produit</label>
-            <input type="text" class="form-control" id="itemDesc" name="itemDesc" value="<? echo $_POST['itemDesc'] ?>">
-            <? echo '<p class="text-danger">'.$error_message_desc.'</p>'?>
+            <input type="text" class="form-control" id="itemDesc" name="itemDesc" value="<?php echo $_POST['itemDesc'] ?>">
+            <?php echo '<p class="text-danger">'.$error_message_desc.'</p>'?>
         </div>
         <div class="row">
             <div class="form-group col-5">
                 <label for="itemPrice">Prix du produit</label>
                 <div class="input-group">
-                    <input type="number" step="1" class="form-control" id="itemPrice" name="itemPrice" value="<? echo $_POST['itemPrice'] ?>">
+                    <input type="number" step="1" class="form-control" id="itemPrice" name="itemPrice" value="<?php echo $_POST['itemPrice'] ?>">
                     <div class="input-group-append">
                         <span class="input-group-text">€</span>
                     </div>
                 </div>
-                <? echo '<p class="text-danger">'.$error_message_price.'</p>'?>
+                <?php echo '<p class="text-danger">'.$error_message_price.'</p>'?>
             </div>
             <div class="form-group col-7">
                 <label for="itemFile">Image du produit (poid max : 1Mo)</label>
@@ -109,7 +109,7 @@ if (empty($_POST)){
                         <label class="custom-file-label" for="itemFile">Importer une image</label>
                     </div>
                 </div>
-                <? echo '<p class="text-danger">'.$error_message_picture.'</p>'?>
+                <?php echo '<p class="text-danger">'.$error_message_picture.'</p>'?>
             </div>
         </div>
 
@@ -117,7 +117,7 @@ if (empty($_POST)){
         <button type="reset" class="btn btn-primary mt-5 float-right mr-3">Reset</button>
     </form>
 </div>
-<? include "footer.php" ?>
+<?php include "footer.php" ?>
 <script src="js/jquery-3.5.1.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/bs-custom-file-input.min.js"></script>
