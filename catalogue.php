@@ -2,9 +2,18 @@
 session_start();
 //Inclusion du fichier article PHP
 include "functions.php";
+include "database.php";
 
-//Array commune pour les 3 articles
-global $list_articles;
+//Récuprer tout les articles BDD
+function show_all_product(){
+    $bdd = connectBDD();
+    $req = $bdd->prepare('SELECT * FROM products');
+    $req->execute(array());
+    while($articles = $req->fetch()){
+      displayItem($articles["name"], $articles["price"], $articles["picture"], $articles["description"], $articles['id']);
+    }
+    $req->closeCursor();
+}
 
 $error_basket_empty = "";
 if (isset($_GET['error']) && $_GET['error']){
@@ -30,9 +39,7 @@ if (isset($_GET['error']) && $_GET['error']){
     </div>
     <form action="basket.php" method="post">
 <?php
-    foreach ($list_articles as $index => $article){
-        displayItem($article["name"], $article["price"], $article["picture"], $article["desc"], $index);
-}
+show_all_product();
 ?>
         <div class="d-flex justify-content-end align-items-start">
             <p class="text-danger mr-4 pt-1"><? echo $error_basket_empty ?></p>

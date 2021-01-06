@@ -1,4 +1,5 @@
 <?php
+include "database.php";
 //Variables d'erreur
 $form_error = false;
 $error_message_name = "";
@@ -19,21 +20,33 @@ if (empty($_POST)){
         $form_error = true;
         $error_message_name = "Il faut obligatoirement entrer un nom.";
     }else{
-        $get_name = htmlspecialchars($_POST['itemName']);
+        $add_name = htmlspecialchars($_POST['itemName']);
     }
     // Verifie et Implante le $_POST description
     if (empty($_POST['itemDesc'])){
         $form_error = true;
         $error_message_desc = "Il faut obligatoirement entrer une description.";
     }else{
-        $get_desc = htmlspecialchars($_POST['itemDesc']);
+        $add_desc = htmlspecialchars($_POST['itemDesc']);
     }
     // Verifie et Implante le $_POST price
     if (empty($_POST['itemPrice']) || $_POST['itemPrice'] <= 0){
         $form_error = true;
         $error_message_price = "Il faut obligatoirement entrer une valeur positive.";
     }else{
-        $get_price = htmlspecialchars($_POST['itemPrice']);
+        $add_price = htmlspecialchars($_POST['itemPrice']);
+    }
+    if (empty($_POST['itemWeight']) || $_POST['itemWeight'] <= 0){
+        $form_error = true;
+        $error_message_weight = "Il faut obligatoirement entrer une valeur positive.";
+    }else{
+        $add_weight = htmlspecialchars($_POST['itemWeight']);
+    }
+    if (empty($_POST['itemQuantity']) || $_POST['itemQuantity'] <= 0){
+        $form_error = true;
+        $error_message_quantity = "Il faut obligatoirement entrer une valeur positive.";
+    }else{
+        $add_quantity = htmlspecialchars($_POST['itemQuantity']);
     }
     // Test si le fichier IMAGE à bien été envoyer et si il n'y a pas d'erreur
     if(!empty($_FILES['itemFile']) AND $_FILES['itemFile']['error'] == 0){
@@ -45,7 +58,7 @@ if (empty($_POST)){
             //Verifie le format du fichier
             if (in_array($extension_upload, $extension_autorisees)){
                 move_uploaded_file($_FILES['itemFile']['tmp_name'], "img/".basename($_FILES['itemFile']['name']));
-                $get_picture = htmlspecialchars($_FILES['itemFile']['name']);
+                $add_picture = htmlspecialchars($_FILES['itemFile']['name']);
             }else{
                 $form_error = true;
                 $error_message_picture = "Cette extension n'est pas autorisée.";
@@ -60,7 +73,16 @@ if (empty($_POST)){
     }
     // Si tout est OK Envoi en GET les info à displayItem
     if(!$form_error){
-       header("Location: displayItem.php?itemName=".$get_name."&itemPrice=".$get_price."&itemPicture=".$get_picture."&itemDesc=".$get_desc."");
+        $add_available = $_POST['itemDispo'];
+        $add_categorie = $_POST['itemCategorie'];
+        $bdd = connectBDD();
+        $req = $bdd->prepare("INSERT INTO products (name, description, price, weight, quantity, available, picture, categorie_id)
+                                    VALUES('".$add_name."', '".$add_desc."', '".$add_price."', '".$add_weight."', '".$add_quantity."', '".$add_available."', '".$add_picture."', '".$add_categorie."')");
+        $req->execute();
+        $req->closeCursor();
+        $id_product = $bdd->lastInsertId();
+
+        header("Location: displayItem.php?id=".$id_product."");
    }
 }
 
@@ -78,7 +100,7 @@ if (empty($_POST)){
 </head>
 <body>
 <?php include "header.php"; ?>
-<div class="container">
+<div class="container mb-5">
     <form method="post" action="addItem.php" enctype="multipart/form-data">
         <div class="form-group">
             <label for="itemName">Nom du produit</label>
@@ -112,9 +134,47 @@ if (empty($_POST)){
                 <?php echo '<p class="text-danger">'.$error_message_picture.'</p>'?>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-3">
+                <label for="itemWeight">poids du produit</label>
+                <div class="input-group">
+                    <input type="number" step="1" class="form-control" id="itemWeight" name="itemWeight" value="<?php echo $_POST['itemWeight'] ?>">
+                    <div class="input-group-append">
+                        <span class="input-group-text">Gr</span>
+                    </div>
+                </div>
+                <?php echo '<p class="text-danger">'.$error_message_weight.'</p>'?>
+            </div>
+            <div class="form-group col-3">
+                <label for="itemQuantity">Quantité du produit</label>
+                <div class="input-group">
+                    <input type="number" step="1" class="form-control" id="itemQuantity" name="itemQuantity" value="<?php echo $_POST['itemQuantity'] ?>">
+                </div>
+                <?php echo '<p class="text-danger">'.$error_message_quantity.'</p>'?>
+            </div>
+            <div class="form-group col-3">
+                <label for="itemCategorie">Catégorie du produit</label>
+                <div class="input-group">
+                    <select class="custom-select" name="itemCategorie" id="categorie">
+                        <option value="1">Inutile</option>
+                        <option value="2">Très inutile</option>
+                        <option value="3">Absolument inutile</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-3">
+                <label for="itemDispo">Disponibilité du produit</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" value="1" id="dispo" name="itemDispo" checked>
+                    <label class="form-check-label" for="dispo">Disponible</label><br>
+                    <input class="form-check-input" type="radio" value="0" id="dispo" name="itemDispo">
+                    <label class="form-check-label" for="dispo">Pas Disponible</label>
+                </div>
+            </div>
+        </div>
 
         <button type="submit" class="btn btn-primary mt-5 float-right">Créer le produit</button>
-        <button type="reset" class="btn btn-primary mt-5 float-right mr-3">Reset</button>
+        <button type="reset" class="btn btn-primary mt-5 float-right mr-3 mb-5">Reset</button>
     </form>
 </div>
 <?php include "footer.php" ?>

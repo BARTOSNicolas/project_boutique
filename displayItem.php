@@ -1,10 +1,17 @@
 <?php
 include "functions.php";
+include "database.php";
+$id = $_GET['id'];
 
-$new_name = htmlspecialchars($_GET['itemName']);
-$new_desc = htmlspecialchars($_GET['itemDesc']);
-$new_price = htmlspecialchars($_GET['itemPrice']);
-$new_picture = htmlspecialchars($_GET['itemPicture']);
+function show_single_product($product_id){
+   $bdd = connectBDD();
+   $req = $bdd->prepare('SELECT * FROM products WHERE id='.$product_id.' ');
+   $req->execute(array());
+   while($article = $req->fetch()){
+       displayItemSelf($article['name'], $article['price'], $article['picture'], $article['description'], $article['id']);
+   }
+    $req->closeCursor();
+}
 
 ?>
 <!doctype html>
@@ -20,9 +27,9 @@ $new_picture = htmlspecialchars($_GET['itemPicture']);
 <body>
 <?php include "header.php" ?>
 <div class="container">
-    <?php displayItemSelf($new_name, $new_price, $new_picture, $new_desc) ?>
+    <p class="text_danger"><?php echo $message_delete?></p>
     <div class="d-flex justify-content-center">
-        <a type="button" href="addItem.php" class="btn btn-danger mt-5 mr-3 ">Annuler le produit</a>
+        <!-- <a type="button" href="addItem.php" class="btn btn-danger mt-5 mr-3 ">Annuler le produit</a> -->
         <a type="button" href="catalogue.php" class="btn btn-success mt-5">Valider le produit</a>
     </div>
 </div>

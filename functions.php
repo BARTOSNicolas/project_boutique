@@ -13,7 +13,7 @@ function displayItem($name, $price, $picture, $desc, $index){
                     <p class="card-text">'.$desc.'</p>
                 </div>
                 <div class="col-1 w-50 d-flex align-items-center">
-                    <a href="item.php?itemName='.$name.'&amp;itemPrice='.$price.'&amp;itemPicture='.$picture.'&amp;itemDesc='.$desc.'&amp;itemId='.$index.'" class="btn btn-primary w-100">'.$price.' €</a>
+                    <a href="item.php?id='.$index.'" class="btn btn-primary w-100">'.$price.' €</a>
                 </div>
                 <div class="col-2 w-50 d-flex align-items-center justify-content-center">
                     <div class="form-check">
@@ -28,7 +28,7 @@ function displayItem($name, $price, $picture, $desc, $index){
     ';
 }
 //Fonction pôur afficher 1 article
-function displayItemSelf($name, $price, $picture, $desc){
+function displayItemSelf($name, $price, $picture, $desc, $id){
     echo'<div class="card mb-3 d-flex .flex-column align-content-center">
             <div class="row no-gutters">
                 <div class="col-2">
@@ -39,7 +39,7 @@ function displayItemSelf($name, $price, $picture, $desc){
                     <p class="card-text">'.$desc.'</p>
                 </div>
                 <div class="col-1 w-50 d-flex align-items-center">
-                    <a href="item.php?itemName='.$name.'&amp;itemPrice='.$price.'&amp;itemPicture='.$picture.'&amp;itemDesc='.$desc.'" class="btn btn-primary w-100">'.$price.' €</a>
+                    <a href="item.php?itemName='.$id.'" class="btn btn-primary w-100">'.$price.' €</a>
                 </div>              
             </div>
         </div>

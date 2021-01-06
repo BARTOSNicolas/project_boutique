@@ -1,12 +1,18 @@
 <?php
 include "functions.php";
+include  "database.php";
 
 //Variables
-$item_name = htmlspecialchars($_GET['itemName']);
-$item_price = htmlspecialchars($_GET['itemPrice']);
-$item_picture = htmlspecialchars($_GET['itemPicture']);
-$item_desc = htmlspecialchars($_GET['itemDesc']);
+$id = $_GET['id'];
 
+function show_single_product($product_id){
+    $bdd = connectBDD();
+    $req = $bdd->prepare('SELECT * FROM products WHERE id='.$product_id.' ');
+    $req->execute(array());
+    $article = $req->fetch();
+    displayItemSelf($article['name'], $article['price'], $article['picture'], $article['description'], $article['id']);
+    $req->closeCursor();
+}
 
 ?>
 <!doctype html>
@@ -22,7 +28,7 @@ $item_desc = htmlspecialchars($_GET['itemDesc']);
 <body>
 <?php include "header.php" ?>
 <div class="container">
-    <?php displayItemSelf($item_name, $item_price, $item_picture, $item_desc)?>
+    <?php show_single_product($id); ?>
     <a type="button" href="catalogue.php" class="btn btn-primary mt-5 float-right">Retour</a>
 </div>
 <?php include "footer.php" ?>
