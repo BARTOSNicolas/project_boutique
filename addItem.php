@@ -6,6 +6,8 @@ $error_message_name = "";
 $error_message_desc = "";
 $error_message_picture = "";
 $error_message_price = "";
+$error_message_weight = "";
+$error_message_quantity = "";
 
 //Verifie SI le $_POST est vide
 if (empty($_POST)){
@@ -174,7 +176,7 @@ if (empty($_POST)){
         </div>
 
         <button type="submit" class="btn btn-primary mt-5 float-right">Créer le produit</button>
-        <button type="reset" class="btn btn-primary mt-5 float-right mr-3 mb-5">Reset</button>
+        <button type="reset" class="btn btn-primary mt-5 float-right mr-3" style="margin-bottom: 100px">Reset</button>
     </form>
 </div>
 <?php include "footer.php" ?>

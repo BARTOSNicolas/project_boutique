@@ -10,7 +10,7 @@ function show_single_product($product_id){
     $req = $bdd->prepare('SELECT * FROM products WHERE id='.$product_id.' ');
     $req->execute(array());
     $article = $req->fetch();
-    displayItemSelf($article['name'], $article['price'], $article['picture'], $article['description'], $article['id']);
+    displayItemSelf($article['name'], $article['price'], $article['picture'], $article['description'], $article['id'], $article['quantity'], $article['weight']);
     $req->closeCursor();
 }
 
@@ -29,7 +29,7 @@ function show_single_product($product_id){
 <?php include "header.php" ?>
 <div class="container">
     <?php show_single_product($id); ?>
-    <a type="button" href="catalogue.php" class="btn btn-primary mt-5 float-right">Retour</a>
+    <a type="button" href="catalogue.php" class="btn btn-primary mt-5 float-right" style="margin-bottom: 100px">Retour</a>
 </div>
 <?php include "footer.php" ?>
 <script src="js/jquery-3.5.1.slim.min.js"></script>

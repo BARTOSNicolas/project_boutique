@@ -1,15 +1,18 @@
 <?php
 //Démarrer le system de SESSION
 session_start();
-//Variables
+
 include "functions.php";
-global $list_articles; // Appelle la variable en global
+include "database.php";
+
+//Variables
 $basket_list = array();
 $quantity_list = array();
 $message_error_price = "";
 $empty = false;
 $shipping_weight = 0;
 $shipping_price = 0;
+
 // SI le POST est vide message erreur
 if (isset($_POST['basket'])){
     $basket_list = $_POST['basket'];
@@ -30,7 +33,7 @@ if (isset($_POST['basket'])){
 
 // Pour supprimer les articles
 foreach ($basket_list as $index => $item){
-    if (isset($_POST['delete'.$index])){ //Executer seulement sur les btn 'supprimer'
+    if (isset($_POST['delete'.$item])){ //Executer seulement sur les btn 'supprimer'
         unset($basket_list[$index]);
         unset($quantity_list[$index]);
         //SI la liste est vide ERREUR
@@ -89,6 +92,25 @@ if(isset($_GET["empty"]) && $_GET["empty"]){
     emptyBasket();
     $message_error_price = "le panier est vide";
 }
+//BDD
+function show_basket($list){
+    global $total_price, $shipping_weight, $quantity_list, $message_error_price;
+    $bdd = connectBDD();
+    foreach ($list as $index => $item){
+        if ($quantity_list[$index] <= 0){
+            $message_error_price = "Quantité inextact";
+        }
+        $req = $bdd->prepare('SELECT * FROM products WHERE id = '.$item.' ');
+        $req->execute();
+        $data = $req->fetch();
+        displayItemBasket($data['name'], $data['price'], $data['picture'], $data['description'], $data['id'], $quantity_list[$index], $message_error_price, $data['weight']);
+        $req->closeCursor();
+        $total_price = $total_price + calculBasket($quantity_list[$index], $data['price']); //Calcul prix total
+        $shipping_weight = $shipping_weight + calculShipping($quantity_list[$index], $data['weight']); //Calcul poids total
+        echo '<input type="hidden" value="'.$item.'" name="basket_list[]">';
+    }
+
+}
 // On charge les variables de SESSION
 $_SESSION['basket'] = $basket_list;
 $_SESSION['quantity'] = $quantity_list;
@@ -107,24 +129,17 @@ $_SESSION['quantity'] = $quantity_list;
 <?php include "header.php" ?>
 <div class="container">
     <form action="basket.php" method="post">
-        <?php foreach ($basket_list as $index => $item){
-            if ($quantity_list[$index] <= 0){
-                $message_error_price = "Quantité inextact";
-            }
-            displayItemBasket($list_articles[$item]['name'], $list_articles[$item]['price'], $list_articles[$item]['picture'], $list_articles[$item]['desc'], $index, $quantity_list[$index], $message_error_price, $list_articles[$item]['weight']);
-            $total_price = $total_price + calculBasket($quantity_list[$index], $list_articles[$item]['price']); //Calcul prix total
-            $shipping_weight = $shipping_weight + calculShipping($quantity_list[$index], $list_articles[$item]['weight']); //Calcul poids total
-            echo '<input type="hidden" value="'.$item.'" name="basket_list[]">';
-        }
+    <?php
+        show_basket($basket_list, $quantity_list, $message_error_price);
         //Condition des frais de port via le poids calculé
-        if($shipping_weight < 500){
+        if($shipping_weight < 1000){
             $shipping_price = 5;
-        }elseif ($shipping_weight >= 500 && $shipping_weight < 2000 ){
+        }elseif ($shipping_weight >= 1000 && $shipping_weight < 5000 ){
             $shipping_price = $total_price / 100 * 10;
-        }elseif ($shipping_weight >= 2000){
+        }elseif ($shipping_weight >= 5000){
             $shipping_price = 0;
         }
-        ?>
+    ?>
         <div class="d-flex justify-content-end mt-5">
             <label for="calcul" class="mr-5">Poid total : <?php echo ($message_error_price ? "0" : $shipping_weight) ?> gr</label>
             <input type="text" class="text-primary" id="calcul" disabled value="<?php echo ($message_error_price ? "Envoi impossible" : $shipping_price."€") ?>">
@@ -134,7 +149,7 @@ $_SESSION['quantity'] = $quantity_list;
             <input type="text" class="<?php echo ($message_error_price ? "text-danger" : "text-success")?>" id="calcul" disabled value="<?php echo ($message_error_price ? $message_error_price : ($total_price + $shipping_price)."€") ?>">
 
         </div>
-        <a type="button" href="catalogue.php" class="btn btn-primary float-right mt-5">Retour</a>
+        <a type="button" href="catalogue.php" class="btn btn-primary float-right " style="margin: 50px 0 100px 0">Retour</a>
 
     </form>
 </div>

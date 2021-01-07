@@ -3,7 +3,7 @@
 //Test la connection à la base de données
 function connectBDD(){
     $host = 'localhost';
-    $base = 'my_base';
+    $base = 'bdd_composer';
     $user = 'nicolas';
     $password = 'motdepass';
     try
