@@ -2,23 +2,17 @@
 session_start();
 //Inclusion du fichier article PHP
 include "functions.php";
-include "database.php";
+include "class/Catalogue.php";
 
-//Récuprer tout les articles BDD
-function show_all_product(){
-    $bdd = connectBDD();
-    $req = $bdd->prepare('SELECT * FROM products');
-    $req->execute(array());
-    while($articles = $req->fetch()){
-      displayItem($articles["name"], $articles["price"], $articles["picture"], $articles["description"], $articles['id']);
-    }
-    $req->closeCursor();
-}
+//Initialisation du Catalogue
+$catalogue = new Catalogue();
+
 
 $error_basket_empty = "";
 if (isset($_GET['error']) && $_GET['error']){
     $error_basket_empty = "Vous n'avez pas sélectionner de produits";
 }
+
 
 ?>
 <!doctype html>
@@ -39,7 +33,8 @@ if (isset($_GET['error']) && $_GET['error']){
     </div>
     <form action="basket.php" method="post">
 <?php
-show_all_product();
+//displayCat($catalogue->getListArticle());
+displayCat($catalogue->getListArticle());
 ?>
         <div class="d-flex justify-content-end align-items-start">
             <p class="text-danger mr-4 pt-1"><? echo $error_basket_empty ?></p>

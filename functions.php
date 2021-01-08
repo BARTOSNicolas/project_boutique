@@ -72,3 +72,52 @@ function displayItemBasket($name, $price, $picture, $desc, $index, $quantity, $e
         </div>
     ';
 }
+
+//----------FUNCTION POO----------
+function displayArticle(Article $article){
+    echo'<div class="card mb-3 d-flex align-content-center">
+            <div class="row no-gutters">
+                <a href="item.php?id='.$article->getId().'" class="col-2" style="background-image: url(img/'.$article->getImage().'); background-size : cover; background-position: center, center; height:180px"></a>              
+                <div class="card-body col-7 p-2">
+                    <h5 class="card-title">'.$article->getName().'</h5>
+                    <p class="card-text">'.$article->getDescription().'</p>
+                </div>
+                <div class="col-1 w-50 d-flex align-items-center">
+                    <a href="item.php?id='.$article->getId().'" class="btn btn-primary w-100">'.$article->getPrice().' €</a>
+                </div>
+                <div class="col-2 w-50 d-flex align-items-center justify-content-center">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="'.$article->getId().'" id="check'.$article->getId().'" name="basket[]">
+                      <label class="form-check-label" for="check'.$article->getId().'">
+                        Ajouter
+                      </label>
+                    </div>
+                </div>              
+            </div>
+        </div>
+    ';
+}
+
+function displayCat($catalogue){
+    foreach ($catalogue as $article){
+        displayArticle($article);
+    }
+}
+
+function displayClient(Client $client){
+    echo '
+        <tr>
+            <th scope="row">'.$client->getId().'</th>
+            <td>'.$client->getFirstName().'</td>
+            <td>'.$client->getLastName().'</td>
+            <td>'.$client->getAdresse().'</td>
+            <td>'.$client->getZipCode().'</td>
+            <td>'.$client->getCity().'</td>
+        </tr>
+    ';
+}
+function displayAllClient($list_client){
+    foreach ($list_client as $client){
+        displayClient($client);
+    }
+}
