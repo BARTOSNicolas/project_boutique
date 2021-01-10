@@ -1,10 +1,11 @@
 <?php
-include "database.php";
-include "class/Client.php";
+//Inclusion Classe Client et connection BDD
+require "database/database.php";
+require "class/Client.php";
 
 class ClientList
 {
-    private $list_client = array();
+    private $_list_client = array();
 
     public function __construct(){
         $bdd = connectBDD();
@@ -12,13 +13,19 @@ class ClientList
         $req->execute();
         while($data = $req->fetch()){
             $client = new Client($data['id'], $data['first_name'], $data['last_name'], $data['adresse'], $data['zip_code'], $data['city']);
-            array_push($this->list_client, $client);
+            array_push($this->_list_client, $client);
         }
         $req->closeCursor();
     }
 
     public function getListClient()
     {
-        return $this->list_client;
+        return $this->_list_client;
+    }
+
+    public function displayAllClient(){
+        foreach ($this->_list_client as $client){
+            $client->displayClient();
+        }
     }
 }

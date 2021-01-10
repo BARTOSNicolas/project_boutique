@@ -1,5 +1,7 @@
 <?php
-include "database.php";
+//Inclusion de la connection à la database
+require "database/database.php";
+
 //Variables d'erreur
 $form_error = false;
 $error_message_name = "";
@@ -9,7 +11,7 @@ $error_message_price = "";
 $error_message_weight = "";
 $error_message_quantity = "";
 
-//Verifie SI le $_POST est vide
+//SI le $_POST est vide rempli avec du vide
 if (empty($_POST)){
     $_POST['itemName'] ='';
     $_POST['itemDesc'] = '';
@@ -38,19 +40,21 @@ if (empty($_POST)){
     }else{
         $add_price = htmlspecialchars($_POST['itemPrice']);
     }
+    // Verifie et Implante le $_POST weight
     if (empty($_POST['itemWeight']) || $_POST['itemWeight'] <= 0){
         $form_error = true;
         $error_message_weight = "Il faut obligatoirement entrer une valeur positive.";
     }else{
         $add_weight = htmlspecialchars($_POST['itemWeight']);
     }
+    // Verifie et Implante le $_POST quantity
     if (empty($_POST['itemQuantity']) || $_POST['itemQuantity'] <= 0){
         $form_error = true;
         $error_message_quantity = "Il faut obligatoirement entrer une valeur positive.";
     }else{
         $add_quantity = htmlspecialchars($_POST['itemQuantity']);
     }
-    // Test si le fichier IMAGE à bien été envoyer et si il n'y a pas d'erreur
+    // Test si le fichier IMAGE à bien été envoyé et si il n'y a pas d'erreur
     if(!empty($_FILES['itemFile']) AND $_FILES['itemFile']['error'] == 0){
         //Verifie que le fichier n'est pas trop gros
         if($_FILES['itemFile']['size'] <= 1000000){
@@ -73,10 +77,8 @@ if (empty($_POST)){
         $form_error = true;
         $error_message_picture = "L'image est obligatoire pour valider le formulaire.";
     }
-    // Si tout est OK Envoi en GET les info à displayItem
+    // Si tout est OK Envoi à la base de donnée et envoi l'id à displayItem
     if(!$form_error){
-        $add_available = $_POST['itemDispo'];
-        $add_categorie = $_POST['itemCategorie'];
         $bdd = connectBDD();
         $req = $bdd->prepare("INSERT INTO products (name, description, price, weight, quantity, available, picture, categorie_id)
                                     VALUES('".$add_name."', '".$add_desc."', '".$add_price."', '".$add_weight."', '".$add_quantity."', '".$add_available."', '".$add_picture."', '".$add_categorie."')");
@@ -84,12 +86,11 @@ if (empty($_POST)){
         $req->closeCursor();
         $id_product = $bdd->lastInsertId();
 
-        header("Location: displayItem.php?id=".$id_product."");
+        header("Location: displayItem.php?id=$id_product");
    }
 }
-
+//Affichage
 ?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -115,7 +116,7 @@ if (empty($_POST)){
             <?php echo '<p class="text-danger">'.$error_message_desc.'</p>'?>
         </div>
         <div class="row">
-            <div class="form-group col-5">
+            <div class="form-group col-sm-5">
                 <label for="itemPrice">Prix du produit</label>
                 <div class="input-group">
                     <input type="number" step="1" class="form-control" id="itemPrice" name="itemPrice" value="<?php echo $_POST['itemPrice'] ?>">
@@ -125,7 +126,7 @@ if (empty($_POST)){
                 </div>
                 <?php echo '<p class="text-danger">'.$error_message_price.'</p>'?>
             </div>
-            <div class="form-group col-7">
+            <div class="form-group col-sm-7">
                 <label for="itemFile">Image du produit (poid max : 1Mo)</label>
                 <div class="input-group">
                     <div class="custom-file">
@@ -137,7 +138,7 @@ if (empty($_POST)){
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-3">
+            <div class="form-group col-sm-6">
                 <label for="itemWeight">poids du produit</label>
                 <div class="input-group">
                     <input type="number" step="1" class="form-control" id="itemWeight" name="itemWeight" value="<?php echo $_POST['itemWeight'] ?>">
@@ -147,14 +148,14 @@ if (empty($_POST)){
                 </div>
                 <?php echo '<p class="text-danger">'.$error_message_weight.'</p>'?>
             </div>
-            <div class="form-group col-3">
+            <div class="form-group col-sm-6">
                 <label for="itemQuantity">Quantité du produit</label>
                 <div class="input-group">
                     <input type="number" step="1" class="form-control" id="itemQuantity" name="itemQuantity" value="<?php echo $_POST['itemQuantity'] ?>">
                 </div>
                 <?php echo '<p class="text-danger">'.$error_message_quantity.'</p>'?>
             </div>
-            <div class="form-group col-3">
+            <div class="form-group col-sm-6">
                 <label for="itemCategorie">Catégorie du produit</label>
                 <div class="input-group">
                     <select class="custom-select" name="itemCategorie" id="categorie">
@@ -164,7 +165,7 @@ if (empty($_POST)){
                     </select>
                 </div>
             </div>
-            <div class="form-group col-3">
+            <div class="form-group col-sm-6">
                 <label for="itemDispo">Disponibilité du produit</label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" value="1" id="dispo" name="itemDispo" checked>

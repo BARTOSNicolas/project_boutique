@@ -1,82 +1,63 @@
 <?php
 
-
 class Client
 {
-    private $id;
-    private $first_name;
-    private $last_name;
-    private $adresse;
-    private $zip_code;
-    private $city;
+    private $_id;
+    private $_first_name;
+    private $_last_name;
+    private $_adresse;
+    private $_zip_code;
+    private $_city;
 
     public function __construct($id, $first_name, $last_name, $adresse, $zip_code, $city){
-        $this->id = $id;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
-        $this->adresse = $adresse;
-        $this->zip_code = $zip_code;
-        $this->city = $city;
+        $this->_id = $id;
+        $this->_first_name = $first_name;
+        $this->_last_name = $last_name;
+        $this->_adresse = $adresse;
+        $this->_zip_code = $zip_code;
+        $this->_city = $city;
     }
 
     public function getId()
     {
-        return $this->id;
+        return $this->_id;
     }
 
     public function getFirstName()
     {
-        return $this->first_name;
+        return $this->_first_name;
     }
 
     public function getLastName()
     {
-        return $this->last_name;
+        return $this->_last_name;
     }
 
     public function getAdresse()
     {
-        return $this->adresse;
+        return $this->_adresse;
     }
 
     public function getCity()
     {
-        return $this->city;
+        return $this->_city;
     }
 
     public function getZipCode()
     {
-        return $this->zip_code;
+        return $this->_zip_code;
     }
 
-    public function setId($id): void
-    {
-        $this->id = $id;
+    public function displayClient(){
+        echo '
+        <tr>
+            <th scope="row">'.$this->_id.'</th>
+            <td>'.$this->_first_name.'</td>
+            <td>'.$this->_last_name.'</td>
+            <td>'.$this->_adresse.'</td>
+            <td>'.$this->_zip_code.'</td>
+            <td>'.$this->_city.'</td>
+        </tr>
+    ';
     }
-
-    public function setFirstName($first_name): void
-    {
-        $this->first_name = $first_name;
-    }
-
-    public function setLastName($last_name): void
-    {
-        $this->last_name = $last_name;
-    }
-
-    public function setAdresse($adresse): void
-    {
-        $this->adresse = $adresse;
-    }
-
-    public function setZipCode($zip_code): void
-    {
-        $this->zip_code = $zip_code;
-    }
-
-    public function setCity($city): void
-    {
-        $this->city = $city;
-    }
-
 }

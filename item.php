@@ -1,20 +1,23 @@
 <?php
-include "functions.php";
-include  "database.php";
+//Inclusion des Classe
+require "class/Article.php";
+require "database/database.php";
 
 //Variables
 $id = $_GET['id'];
 
+//Fonction pour afficher un seul produit
 function show_single_product($product_id){
     $bdd = connectBDD();
     $req = $bdd->prepare('SELECT * FROM products WHERE id='.$product_id.' ');
     $req->execute(array());
-    $article = $req->fetch();
-    displayItemSelf($article['name'], $article['price'], $article['picture'], $article['description'], $article['id'], $article['quantity'], $article['weight']);
+    $data = $req->fetch();
+    $article = new Article($data['id'], $data['name'], $data['description'], $data['price'], $data['quantity'], $data['picture'], $data['weight'], $data['available'], $data['categorie_id']);
+    $article->displayArticleSelf();
     $req->closeCursor();
 }
-
 ?>
+<!-- Affichage -->
 <!doctype html>
 <html lang="en">
 <head>

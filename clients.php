@@ -1,9 +1,11 @@
 <?php
-include "functions.php";
-include "class/ClientList.php";
+//Inclusion de la Class
+require "class/ClientList.php";
 
+//Création de l'objet
 $list_client = new ClientList();
 
+//Affichage
 ?>
 <!doctype html>
 <html lang="en">
@@ -31,16 +33,12 @@ $list_client = new ClientList();
         </thead>
         <tbody>
         <?php
-            displayAllClient($list_client->getListClient());
+            $list_client->displayAllClient();
         ?>
         </tbody>
     </table>
-
-
     <a type="button" href="catalogue.php" class="btn btn-primary float-right " style="margin: 50px 0 100px 0">Retour</a>
 </div>
-
-
 <?php include "footer.php" ?>
 <script src="js/jquery-3.5.1.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>

@@ -1,11 +1,12 @@
 <?php
-include "database.php";
-include "class/Article.php";
+//Inclusion Classe Article et connection BDD
+require "database/database.php";
+require "class/Article.php";
 
 class Catalogue
 {
     //----------ATTRIBUTS----------
-    private $list_article = array();
+    private $_list_article = array();
 
 
     //----------CONSTRUCTEUR----------
@@ -15,15 +16,21 @@ class Catalogue
         $req->execute();
         while($data = $req->fetch()){
             $article = new Article($data['id'], $data['name'], $data['description'], $data['price'], $data['quantity'], $data['picture'], $data['weight'], $data['available'], $data['categorie_id']);
-            array_push($this->list_article, $article);
+            array_push($this->_list_article, $article);
         }
         $req->closeCursor();
     }
 
-    //----------METHODES----------
     //----------GETTER----------
     public function getListArticle()
     {
-        return $this->list_article;
+        return $this->_list_article;
+    }
+
+    //----------METHODES----------
+    public function displayCat(){
+        foreach ($this->_list_article as $article){
+            $article->displayArticle($article);
+        }
     }
 }

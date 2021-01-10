@@ -1,7 +1,12 @@
 <?php
-//Message en random
-$message = array("Ca sert à rien, alors vous en avez besoin !!", "Les objets du quotidien qui ne vous serviront à rien !!", "Vous êtes riche, alors acheter les quand même !!");
-$rand = rand( 0, 2 );
+//Message en random dans une Array
+$message = array("Ca sert à rien, alors vous en avez besoin !!",
+                 "Les objets du quotidien qui ne vous serviront à rien !!",
+                 "Vous êtes riche, alors achetez les quand même !!",
+                 "Les meilleurs objets inutiles du monde !!");
+//Chiffre aléatoire entre 0 et la longueur de l'Array -1
+$rand = rand( 0, count($message)-1 );
+//Affichage
 echo '
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
