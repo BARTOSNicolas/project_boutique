@@ -2,7 +2,11 @@
 require_once "database/database.php";
 //FONCTIONS POO ARTICLES
 function displayArticle(Article $article){
-    echo'<div class="card mb-4 d-flex align-content-center shadow-sm border-0 position-relative">';
+    if(method_exists($article, 'getLegendary')){
+        echo '<div class="card mb-4 d-flex align-content-center shadow-sm position-relative border-4 border-warning">';
+    }else{
+        echo '<div class="card mb-4 d-flex align-content-center shadow-sm position-relative border-0">';
+    }
     // SI c'est n'est plus disponible
     if($article->getAvailable() == 0){
         echo'<div class="position-absolute bg-danger text-white text-center rounded shadow" style="top: 125px; left: -25px; z-index: 1; transform: rotate(-45deg); transform-origin: top left;">
@@ -11,8 +15,11 @@ function displayArticle(Article $article){
     }
     echo'<div class="row no-gutters">
                 <a href="item.php?id='.$article->getId().'" class="col-sm-2" style="background-image: url(img/'.$article->getImage().'); background-size : cover; background-position: center, center; height:180px"></a>              
-                <div class="card-body col-lg-7 col-sm-6 p-2">
-                    <h5 class="card-title">'.$article->getName().'</h5>
+                <div class="card-body col-lg-7 col-sm-6 p-2">';
+    if(method_exists($article, 'getLegendary')){
+        echo '<h4 class="text-warning text-capitalize">'. $article->getLegendary() .'</h4>';
+    }
+                    echo'<h5 class="card-title">'.$article->getName().'</h5>
                     <p class="card-text">'.$article->getDescription().'</p>
                 </div>
                 <div class="col-lg-1 col-sm-2 w-50 d-flex align-items-center">
