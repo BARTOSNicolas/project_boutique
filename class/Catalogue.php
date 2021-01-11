@@ -27,10 +27,4 @@ class Catalogue
         return $this->_list_article;
     }
 
-    //----------METHODES----------
-    public function displayCat(){
-        foreach ($this->_list_article as $article){
-            $article->displayArticle($article);
-        }
-    }
 }

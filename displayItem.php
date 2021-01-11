@@ -1,6 +1,8 @@
 <?php
+session_start(); //Démarrer le system de SESSION
 //Inclusion des Classes
 require "class/Article.php";
+require "functions.php";
 require "database/database.php";
 
 //Variables
@@ -14,7 +16,7 @@ function show_single_product($product_id){
    $req->execute();
    $data = $req->fetch();
    $article = new Article($data['id'], $data['name'], $data['description'], $data['price'], $data['quantity'], $data['picture'], $data['weight'], $data['available'], $data['categorie_id']);
-   $article->displayArticle();
+   displayArticle($article);
    $req->closeCursor();
 }
 

@@ -1,5 +1,7 @@
 <?php
+session_start(); //Démarrer le system de SESSION
 //Inclusion de la Class
+require "functions.php";
 require "class/ClientList.php";
 
 //Création de l'objet
@@ -33,7 +35,7 @@ $list_client = new ClientList();
         </thead>
         <tbody>
         <?php
-            $list_client->displayAllClient();
+            displayAllClient($list_client);
         ?>
         </tbody>
     </table>

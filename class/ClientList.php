@@ -1,6 +1,6 @@
 <?php
 //Inclusion Classe Client et connection BDD
-require "database/database.php";
+require_once "database/database.php";
 require "class/Client.php";
 
 class ClientList
@@ -23,9 +23,4 @@ class ClientList
         return $this->_list_client;
     }
 
-    public function displayAllClient(){
-        foreach ($this->_list_client as $client){
-            $client->displayClient();
-        }
-    }
 }

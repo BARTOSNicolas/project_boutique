@@ -1,10 +1,30 @@
 <?php
+session_start(); //Démarrer le system de SESSION
 //Inclusion des Classe
 require "class/Article.php";
-require "database/database.php";
+require "class/Panier.php";
+require "functions.php";
+require_once "database/database.php";
 
 //Variables
 $id = $_GET['id'];
+
+$basket = new Panier();
+// SI SESSION On charge la session
+if (isset($_SESSION['basket'])){
+    foreach ($_SESSION['basket'] as $index => $quantity){
+        $basket->addPanier($index);
+        $basket->updatePanier($index, $quantity);
+    }
+}
+
+// Si on ajoute un produit de Catalogue
+if(isset($_POST['add'])){
+    $basket->addPanier($_POST['add']);
+}
+// Enregistrer les SESSIONS
+$_SESSION['basket'] = $basket->getBasketList();
+$_SESSION['in_basket'] = $basket->getPanierNumber();
 
 //Fonction pour afficher un seul produit
 function show_single_product($product_id){
@@ -13,7 +33,7 @@ function show_single_product($product_id){
     $req->execute(array());
     $data = $req->fetch();
     $article = new Article($data['id'], $data['name'], $data['description'], $data['price'], $data['quantity'], $data['picture'], $data['weight'], $data['available'], $data['categorie_id']);
-    $article->displayArticleSelf();
+    displayArticleSelf($article);
     $req->closeCursor();
 }
 ?>
@@ -31,7 +51,9 @@ function show_single_product($product_id){
 <body>
 <?php include "header.php" ?>
 <div class="container">
+    <form action="item.php?id=<?php echo $id ?>" method="post">
     <?php show_single_product($id); ?>
+    </form>
     <a type="button" href="catalogue.php" class="btn btn-primary mt-5 float-right" style="margin-bottom: 100px">Retour</a>
 </div>
 <?php include "footer.php" ?>

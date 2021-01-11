@@ -1,4 +1,5 @@
 <?php
+session_start(); //Démarrer le system de SESSION
 //Inclusion de la connection à la database
 require "database/database.php";
 
@@ -79,6 +80,8 @@ if (empty($_POST)){
     }
     // Si tout est OK Envoi à la base de donnée et envoi l'id à displayItem
     if(!$form_error){
+        $add_available = $_POST['available'];
+        $add_categorie = $_POST['categorie'];
         $bdd = connectBDD();
         $req = $bdd->prepare("INSERT INTO products (name, description, price, weight, quantity, available, picture, categorie_id)
                                     VALUES('".$add_name."', '".$add_desc."', '".$add_price."', '".$add_weight."', '".$add_quantity."', '".$add_available."', '".$add_picture."', '".$add_categorie."')");

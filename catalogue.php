@@ -3,10 +3,28 @@ session_start(); //Démarrage des SESSIONS
 
 //Inclusion de la Classe Catalogue
 require "class/Catalogue.php";
+require "class/Panier.php";
+require "functions.php";
 
 //Initialisation du Catalogue
 $catalogue = new Catalogue();
 
+$basket = new Panier();
+// SI SESSION On charge la session
+if (isset($_SESSION['basket'])){
+    foreach ($_SESSION['basket'] as $index => $quantity){
+        $basket->addPanier($index);
+        $basket->updatePanier($index, $quantity);
+    }
+}
+
+// Si on ajoute un produit de Catalogue
+if(isset($_POST['add'])){
+    $basket->addPanier($_POST['add']);
+}
+// Enregistrer les SESSIONS
+$_SESSION['basket'] = $basket->getBasketList();
+$_SESSION['in_basket'] = $basket->getPanierNumber();
 //Affichage
 ?>
 <!doctype html>
@@ -25,9 +43,9 @@ $catalogue = new Catalogue();
     <div class="d-flex justify-content-end">
         <a type="button" href="addItem.php" class="btn btn-primary mb-5">Add New Item</a>
     </div>
-    <form action="basket.php" method="post">
+    <form action="catalogue.php" method="post">
         <?php
-        $catalogue->displayCat();
+        displayCat($catalogue);
         ?>
         <div class="d-flex justify-content-end align-items-start">
             <input type="submit" class="btn btn-primary" style="margin-bottom: 150px" value="Ajouter au panier">

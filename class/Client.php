@@ -48,16 +48,4 @@ class Client
         return $this->_zip_code;
     }
 
-    public function displayClient(){
-        echo '
-        <tr>
-            <th scope="row">'.$this->_id.'</th>
-            <td>'.$this->_first_name.'</td>
-            <td>'.$this->_last_name.'</td>
-            <td>'.$this->_adresse.'</td>
-            <td>'.$this->_zip_code.'</td>
-            <td>'.$this->_city.'</td>
-        </tr>
-    ';
-    }
 }

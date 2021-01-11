@@ -1,76 +1,71 @@
 <?php
-//Démarrer le system de SESSION
-session_start();
+session_start(); //Démarrer le system de SESSION
 
 //Inclusion des Classes
+require "functions.php";
 require "class/Article.php";
 require "class/Panier.php";
 
 //Variables
-$basket_list = array();
-$quantity_list = array();
 $message_error_price = "";
-$empty = false;
 $shipping_price = 0;
+$basket = new Panier();
+// SI SESSION On charge la session
+if (isset($_SESSION['basket'])){
+    foreach ($_SESSION['basket'] as $index => $quantity){
+        $basket->addPanier($index);
+        $basket->updatePanier($index, $quantity);
+    }
+}
 
-//SI C'est un nouveau POST
-if(isset($_POST['basket'])) {
-    $basket_list = $_POST['basket'];
-    foreach ($basket_list as $index => $item) {
-        $quantity_list[$index] = 1;
+// Si on ajoute un produit de Catalogue
+if(isset($_POST['add'])){
+    $basket->addPanier($_POST['add']);
+}
+
+//SI on fait un calcul du panier
+if(isset($_POST['basket_calcul'])){
+    foreach ($_POST['basket_calcul'] as $index => $quantity){
+        $basket->addPanier($index);
+        $basket->updatePanier($index, $quantity);
     }
-//SI post avec calcul charge le calcul
-}else if(isset($_POST['basket_list'])) {
-    $basket_list = $_POST['basket_list'];
-    foreach ($basket_list as $index => $item) {
-        $quantity_list[$index] = $_POST['quantity'][$index];
-    }
-//SI SESSION charge les sessions
-}else if(isset($_SESSION['basket'])){
-$basket_list = $_SESSION['basket'];
-$quantity_list = $_SESSION["quantity"];
-//SI session vide erreur
-    if(empty($basket_list)) {
-        $message_error_price = "le panier est vide";
-    }
-}else{
+}
+
+// SI C'est vide Message d'erreur
+if(empty($basket->getBasketList())){
     $message_error_price = "le panier est vide";
 }
 
 // Pour supprimer les articles
-foreach ($basket_list as $index => $item){
+foreach ($basket->getBasketList() as $index => $item){
     if (isset($_POST['delete'.$index])){ //Executer seulement sur les btn 'supprimer'
-        unset($basket_list[$index]);
-        unset($quantity_list[$index]);
+        $basket->deletePanier($index);
         //SI la liste est vide ERREUR
-        if (empty($basket_list)){
+        if (empty($basket->getBasketList())){
             $message_error_price = "le panier est vide";
         }
     }
 }
 
-//CREE l'objet Panier à partir de $basket_list et quantity_list
-if(isset($basket_list)){
-    $basket = new Panier($basket_list, $quantity_list);
-}
-
-//Fonction pour vider le panier
-function emptyBasket(){
-    global $basket_list, $quantity_list, $basket;
-    $basket_list = array();
-    $quantity_list = array();
-    $basket = new Panier($basket_list, $quantity_list);
-}
-
-// SI clique sur vider le panier = vide le panier
+//SI on vide le panier
 if(isset($_GET["empty"]) && $_GET["empty"]){
-    emptyBasket();
+    global $basket;
+    $basket = new Panier();
     $message_error_price = "le panier est vide";
 }
 
+//Condition des frais de port via le poids calculé
+if(1 < $basket->getTotalWeight() AND $basket->getTotalWeight() < 1000){
+    $shipping_price = 5;
+}elseif ($basket->getTotalWeight() >= 1000 && $basket->getTotalWeight() < 5000 ){
+    $shipping_price = $basket->getTotalPrice() / 100 * 10;
+}elseif ($basket->getTotalWeight() >= 5000){
+    $shipping_price = 0;
+}
+
 // On enregistre les variables de SESSIONS
-$_SESSION['basket'] = $basket_list;
-$_SESSION['quantity'] = $quantity_list;
+$_SESSION['basket'] = $basket->getBasketList();
+$_SESSION['in_basket'] = $basket->getPanierNumber();
 
 //Affichage
 ?>
@@ -89,16 +84,7 @@ $_SESSION['quantity'] = $quantity_list;
 <div class="container">
     <form action="basket.php" method="post">
     <?php
-        $basket->displayPanier($message_error_price);
-
-        //Condition des frais de port via le poids calculé
-        if($basket->getTotalWeight() < 1000){
-            $shipping_price = 5;
-        }elseif ($basket->getTotalWeight() >= 1000 && $basket->getTotalWeight() < 5000 ){
-            $shipping_price = $basket->getTotalPrice() / 100 * 10;
-        }elseif ($basket->getTotalWeight() >= 5000){
-            $shipping_price = 0;
-        }
+       displayPanier($basket, $message_error_price);
     ?>
         <div class="d-flex justify-content-end mt-5">
             <label for="calcul" class="mr-2 mr-sm-5">Poid total : <?php echo ($message_error_price ? "0" : $basket->getTotalWeight()) ?> gr</label>

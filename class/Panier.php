@@ -1,43 +1,39 @@
 <?php
 //Inclusion Connection à la BDD
-require "database/database.php";
+require_once "database/database.php";
 
 class Panier
 {
-    private $_list_panier = array();
-    private $_quantity_list = array();
-    private $_total_price = 0;
-    private $_total_weight = 0;
+    private $_basket_list = array();
+    private $_total_price;
+    private $_total_weight;
 
-    public function __construct(Array $array_id, Array $array_quantity){
-        foreach($array_quantity as $quantity){
-            array_push($this->_quantity_list, $quantity);
-        }
-        foreach($array_id as $index => $item){
+    //Methode privée pour calculer le poids et prix
+    private function calculTotal(){
+        $price = 0;
+        $weight = 0;
+        foreach ($this->_basket_list as $index => $quantity){
             $bdd = connectBDD();
-            $req = $bdd->prepare('SELECT * FROM products WHERE id='.$item);
+            $req = $bdd->prepare('SELECT * FROM products WHERE id=' . $index . ' ');
             $req->execute();
             $data = $req->fetch();
-            $article_panier = new Article($data['id'], $data['name'], $data['description'], $data['price'], $data['quantity'], $data['picture'], $data['weight'], $data['available'], $data['categorie_id']);
-            array_push($this->_list_panier, $article_panier);
+            $price =  $price + $data['price']*$quantity;
+            $weight =  $weight + $data['weight']*$quantity;
             $req->closeCursor();
-            $this->_total_price = $this->_total_price + $article_panier->getPrice()*$array_quantity[$index];
-            $this->_total_weight = $this->_total_weight + $article_panier->getWeight()*$array_quantity[$index];
         }
+        $this->_total_price = $price;
+        $this->_total_weight = $weight;
     }
 
-    public function getListPanier()
+    public function getBasketList()
     {
-        return $this->_list_panier;
-    }
-
-    public function getQuantityList()
-    {
-        return $this->_quantity_list;
+        $this->calculTotal();
+        return $this->_basket_list;
     }
 
     public function getTotalPrice()
     {
+        $this->calculTotal();
         return $this->_total_price;
     }
 
@@ -45,10 +41,34 @@ class Panier
     {
         return $this->_total_weight;
     }
-
-    public function displayPanier($error){
-        foreach ($this->_list_panier as $index => $article){
-            $article->displayArticlePanier($index, $this->_quantity_list[$index], $error);
+    //Methode pour ajouter un produit ou la quantité
+    public function addPanier($id){
+        if(array_key_exists($id, $this->_basket_list)){
+            $this->_basket_list[$id] = $this->_basket_list[$id] +1;
+        }else{
+            $this->_basket_list[$id] = 1;
         }
     }
+    //Methode pour mettre à jour un produit
+    public function updatePanier($id, $quantity){
+        if(array_key_exists($id, $this->_basket_list)){
+            $this->_basket_list[$id] = $quantity;
+        }
+    }
+    //Methode pour supprimer un produit
+    public function deletePanier($id){
+        if(array_key_exists($id, $this->_basket_list)){
+            unset($this->_basket_list[$id]);
+        }
+    }
+    //Methode pour calculer le nombre de produits dans le panier
+    public function getPanierNumber(){
+        $total_article = 0;
+        foreach($this->_basket_list as $index => $quantity){
+            $total_article = $total_article + 1 * $quantity;
+        }
+        return $total_article;
+    }
+
+
 }
