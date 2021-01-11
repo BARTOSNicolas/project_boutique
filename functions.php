@@ -21,6 +21,8 @@ function displayArticle(Article $article){
     }
                     echo'<h5 class="card-title">'.$article->getName().'</h5>
                     <p class="card-text">'.$article->getDescription().'</p>
+                    <p>Quantité disponible : '. $article->getQuantity() .'</br>
+                    Poids : '. $article->getWeight() .'</p>
                 </div>
                 <div class="col-lg-1 col-sm-2 w-50 d-flex align-items-center">
                     <a href="item.php?id='.$article->getId().'" class="btn btn-primary w-100">'.$article->getPrice().' €</a>
@@ -49,6 +51,8 @@ function displayArticlePanier(Article $article, $quantity, $error)
                 <div class="card-body col-lg-7 col-sm-6 p-2">
                     <h5 class="card-title">' . $article->getName() . '</h5>
                     <p class="card-text">' . $article->getDescription() . '</p>
+                    <p>Quantité disponible : '. $article->getQuantity() .'</br>
+                    Poids : '. $article->getWeight() .'</p>
                 </div>
                 <div class="col-lg-1 col-sm-2 w-50 d-flex align-items-center">
                     <a href="item.php?id=' . $article->getId() .'" class="btn btn-primary w-100">' . $article->getPrice() . ' €</a>
@@ -81,6 +85,8 @@ function displayArticleSelf(Article $article){
                 <div class="card-body col-sm-6 offset-sm-3 p-2">
                     <h5 class="card-title">'.$article->getName().'</h5>
                     <p class="card-text">'.$article->getDescription().'</p>
+                    <p>Quantité disponible : '. $article->getQuantity() .'</br>
+                    Poids : '. $article->getWeight() .'</p>
                 </div>
                 <div class=" col-sm-3 offset-sm-3 d-flex align-items-center">
                     <a href="item.php?id='.$article->getId().'" class="btn btn-primary w-100">'.$article->getPrice().' €</a>
