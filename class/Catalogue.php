@@ -16,13 +16,13 @@ class Catalogue
                               FROM products p LEFT JOIN quality q ON p.id = q.article_id');
         $req->execute();
         while($data = $req->fetch()){
-            if (!$data['quality']){
-                $article = new Article($data['id'], $data['name'], $data['description'], $data['price'], $data['quantity'], $data['picture'], $data['weight'], $data['available'], $data['categorie_id']);
-                $this->_list_article[$data['id']] = $article;
-            }else if ($data['quality']) {
+            if ($data['quality']){
                 $legend = new Legendary($data['id'], $data['name'], $data['description'], $data['price'], $data['quantity'], $data['picture'], $data['weight'], $data['available'], $data['categorie_id'], $data['quality']);
-                $this->_list_article[$data['id']] = $legend;
+                $article = $legend;
+            }else{
+                $article = new Article($data['id'], $data['name'], $data['description'], $data['price'], $data['quantity'], $data['picture'], $data['weight'], $data['available'], $data['categorie_id']);
             }
+            $this->_list_article[$data['id']] = $article;
         }
         $req->closeCursor();
         ksort($this->_list_article);

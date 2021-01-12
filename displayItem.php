@@ -3,7 +3,7 @@ session_start(); //Démarrer le system de SESSION
 //Inclusion des Classes
 require "class/Article.php";
 require "functions.php";
-require "database/database.php";
+//require "database/database.php";
 
 //Variables
 $id = $_GET['id'];
@@ -14,11 +14,12 @@ function show_single_product($product_id){
    $bdd = connectBDD();
    $req = $bdd->prepare('SELECT * FROM products WHERE id='.$product_id.' ');
    $req->execute();
-   $data = $req->fetch();
+   $data = $req->fetch(PDO::FETCH_ASSOC);
    $article = new Article($data['id'], $data['name'], $data['description'], $data['price'], $data['quantity'], $data['picture'], $data['weight'], $data['available'], $data['categorie_id']);
    displayArticle($article);
    $req->closeCursor();
 }
+
 
 //Fonction pour supprimer le produit de la base
 function delete_product($product_id){
